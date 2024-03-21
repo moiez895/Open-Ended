@@ -168,6 +168,45 @@ void Course::load() {
         cout << "No saved data found." << endl;
     }
 }
+void Teacher::assignCourse(Course* course) {
+    coursesTaught.push_back(course);
+    course->teacher = this;
+}
+
+void Teacher::removeCourse(Course* course) {
+    for (int i = 0; i < coursesTaught.size(); i++) {
+        if (coursesTaught[i] == course) {
+            coursesTaught.erase(coursesTaught.begin() + i);
+            course->teacher = nullptr;
+            break;
+        }
+    }
+}
+
+void Teacher::viewCourses() {
+    for (Course* course : coursesTaught) {
+        cout << course->courseName << endl;
+    }
+}
+
+void Course::addStudent(Student* student) {
+    studentsEnrolled.push_back(student);
+}
+
+void Course::removeStudent(Student* student) {
+    for (int i = 0; i < studentsEnrolled.size(); i++) {
+        if (studentsEnrolled[i] == student) {
+            studentsEnrolled.erase(studentsEnrolled.begin() + i);
+            break;
+        }
+    }
+}
+
+void Course::viewStudents() {
+    for (Student* student : studentsEnrolled) {
+        cout << student->name << endl;
+    }
+}
 
 int main(){
 
