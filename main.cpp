@@ -74,6 +74,101 @@ void Student::viewCourses() {
     }
 }
 
+void Student::save() {
+    ofstream file("C:\\Users\\HP\\Desktop\\student.txt", ios::app);
+    file << studentID << endl;
+    file << name << endl;
+    file << email << endl;
+    for (Course* course : coursesEnrolled) {
+        file << course->courseCode << endl;
+    }
+    file.close();
+}
+void Teacher::save() {
+    ofstream file("C:\\Users\\HP\\Desktop\\Teacher.txt",ios::app);
+    file << teacherID << endl;
+    file << name << endl;
+    file << email << endl;
+    for (Course* course : coursesTaught) {
+        file << course->courseCode << endl;
+    }
+    file.close();
+}
+
+void Course::save() {
+    ofstream file("C:\\Users\\HP\\Desktop\\course.txt", ios::app);
+    file << courseCode << endl;
+    file << courseName << endl;
+    if (teacher != nullptr) {
+        file << teacher->teacherID << endl;
+    }
+    for (Student* student : studentsEnrolled) {
+        file << student->studentID << endl;
+    }
+    file.close();
+}
+
+void Student::load() {
+    ifstream file("C:\\Users\\HP\\Desktop\\student.txt", ios::app);
+    if (file.is_open()) {
+        getline(file, studentID);
+        getline(file, name);
+        getline(file, email);
+        string courseCode;
+        while (getline(file, courseCode)) {
+            Course* course = new Course();
+            course->courseCode = courseCode;
+            coursesEnrolled.push_back(course);
+        }
+        file.close();
+    }
+    else {
+        cout << "No saved data found." << endl;
+    }
+}
+
+
+void Teacher::load() {
+    ifstream file("C:\\Users\\HP\\Desktop\\Teacher.txt", ios::app);
+    if (file.is_open()) {
+        getline(file, teacherID);
+        getline(file, name);
+        getline(file, email);
+        string courseCode;
+        while (getline(file, courseCode)) {
+            Course* course = new Course();
+            course->courseCode = courseCode;
+            coursesTaught.push_back(course);
+        }
+        file.close();
+    }
+    else {
+        cout << "No saved data found." << endl;
+    }
+}
+
+void Course::load() {
+    ifstream file("C:\\Users\\HP\\Desktop\\Course.txt", ios::app);
+    if (file.is_open()) {
+        getline(file, courseCode);
+        getline(file, courseName);
+        string teacherId;
+        getline(file, teacherId);
+        teacher = new Teacher();
+        teacher->teacherID = teacherId;
+        string studentId;
+        while (getline(file, studentId)) {
+            Student* student = new Student();
+            student->studentID = studentId;
+            studentsEnrolled.push_back(student);
+        }
+        file.close();
+    }
+    else {
+        cout << "No saved data found." << endl;
+    }
+}
+
 int main(){
 
 system ("pause");
