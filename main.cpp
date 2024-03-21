@@ -48,6 +48,32 @@ public:
     void load();
 };
 
+void Student::enrollCourse(Course* course) {
+    if (course->studentsEnrolled.size() < course->maxCapacity) {
+        coursesEnrolled.push_back(course);
+        course->addStudent(this);
+    }
+    else {
+        cout << "Course is full." << endl;
+    }
+}
+
+void Student::dropCourse(Course* course) {
+    for (int i = 0; i < coursesEnrolled.size(); i++) {
+        if (coursesEnrolled[i] == course) {
+            coursesEnrolled.erase(coursesEnrolled.begin() + i);
+            course->removeStudent(this);
+            break;
+        }
+    }
+}
+
+void Student::viewCourses() {
+    for (Course* course : coursesEnrolled) {
+        cout << course->courseName << endl;
+    }
+}
+
 int main(){
 
 system ("pause");
